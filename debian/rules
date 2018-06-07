@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+# You must remove unused comment lines for the released package.
+#export DH_VERBOSE = 1
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@
+
+build:
+	dh build --before configure
+	./ci/run_envoy_docker.sh './ci/do_ci.sh bazel.dev'
+	mv /tmp/envoy-docker-build/envoy/source/exe/envoy-fastbuild envoy
+	dh build --after build
+
+override_dh_auto_test:
+	echo tests were handled by bazel
+
+override_dh_auto_clean:
+	rm -rf /tmp/envoy-docker-build
+
+override_dh_auto_install:
+	mkdir -p $(DESTDIR)/usr/bin
+	install -o 0 -g 0 -m 0755 envoy $(DESTDIR)/usr/bin
+

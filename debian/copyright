@@ -1,0 +1,6 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: envoy
+Source: http://envoyproxy.io
+
+Copyright: Copyright 2016-2018 Envoy Project Authors
+License:   Apache-2.0
